@@ -1,0 +1,12 @@
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: apache-external-1
+  labels:
+    kubernetes.io/service-name: apache-external  # Links to the Service
+addressType: IPv4
+ports:
+  - port: 8080
+endpoints:
+  - addresses:
+      - '173.249.33.165'

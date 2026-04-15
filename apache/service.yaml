@@ -4,5 +4,6 @@ kind: Service
 metadata:
   name: apache-external
 spec:
-  type: ExternalName
-  externalName: host.k3s.internal
+  ports:
+    - port: 8080
+      targetPort: 8080
