@@ -1,0 +1,10 @@
+# Points to Apache running on the host
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-external
+spec:
+  type: ExternalName
+  externalName: host.k3s.internal
+  ports:
+    - port: 8080
