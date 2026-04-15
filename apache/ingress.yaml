@@ -2,7 +2,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: apache-passthrough
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
+  tls:
+    - hosts:
+        - danilenko.io
+      secretName: danilenko-io-tls
   rules:
     - host: danilenko.io
       http:
