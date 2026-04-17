@@ -15,7 +15,7 @@ backend:
 frontend:
   image:
     repository: nikitadanilenko/foodie-frontend
-    tag: latest
+    tag: 0.0.238
     pullPolicy: Always
   port: 80
   replicaCount: 1
