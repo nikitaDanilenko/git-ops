@@ -1,0 +1,47 @@
+backend:
+  image:
+    repository: nikitadanilenko/foodie
+    tag: latest
+    pullPolicy: Always
+  port: 9000
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+frontend:
+  image:
+    repository: nikitadanilenko/foodie-frontend
+    tag: v0.0.236
+    pullPolicy: Always
+  port: 80
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "32Mi"
+      cpu: "10m"
+    limits:
+      memory: "64Mi"
+      cpu: "100m"
+postgres:
+  image:
+    repository: postgres
+    tag: "16-alpine"
+    pullPolicy: IfNotPresent
+  port: 5432
+  database: foodie
+  username: foodie
+  storage:
+    size: 1Gi
+ingress:
+  host: foodie.danilenko.io
+  clusterIssuer: letsencrypt-prod
+config:
+  jwtDurationSeconds: "86400"
+  jwtPublicKey: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAh1nJLp3YQCtklKyNpUs2Dx8cGUMn7XaK6VPTY4wx01O44j7dAREJ9taA+DtdHIibbt1nAuWUAru1jtosXsZ3m6IhzzMn93s3+OzriqSCXCu0Rzv3at5yERQ34VfzS+W2sgr48DmztpjzRsvMrlVgnlvgYtzMIfUbwj6bNgOklJGLVdBO1JsxNpqWbGIROfzBx4A36fmovH4Orr2NLodGSPjkxhcDwbVThw2AXLSMm3MtTuSEtEKV9JWR+NAtWLyK4HdEttZZOlr6RpS6ZbvHM9wYdTB6DTl9FiThvgrM4BKgiK2kMlhSNGsDKCdXkpaSMv595PTIo9rO5a/x9x5DpwIDAQAB"
+  mailerHost: "localhost"
+  mailerFrom: "foodie@localhost"
+  mailerPort: "1025"

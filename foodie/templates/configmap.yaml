@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+  labels:
+    app: {{ .Release.Name }}
+data:
+  JWT_CONFIGURATION_RESTRICTED_DURATION_IN_SECONDS: {{ .Values.config.jwtDurationSeconds | quote }}
+  PLAY_MAILER_HOST: {{ .Values.config.mailerHost }}
+  PLAY_MAILER_FROM: {{ .Values.config.mailerFrom }}
+  PLAY_MAILER_PORT: {{ .Values.config.mailerPort | quote }}
+
