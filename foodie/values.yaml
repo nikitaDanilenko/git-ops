@@ -1,11 +1,7 @@
 backend:
   image:
     repository: nikitadanilenko/foodie
-<<<<<<< deploy/foodie-backend-v0.0.236
-    tag: v0.0.236
-=======
-    tag: latest
->>>>>>> main
+    tag: v0.0.237
     pullPolicy: Always
   port: 9000
   replicaCount: 1
@@ -19,11 +15,7 @@ backend:
 frontend:
   image:
     repository: nikitadanilenko/foodie-frontend
-<<<<<<< deploy/foodie-backend-v0.0.236
     tag: latest
-=======
-    tag: v0.0.236
->>>>>>> main
     pullPolicy: Always
   port: 80
   replicaCount: 1
