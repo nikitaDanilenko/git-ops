@@ -5,30 +5,29 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd,{{ .Release.Namespace }}-strip-api-prefix@kubernetescrd
 spec:
   tls:
-  - hosts:
-    - {{ .Values.ingress.host }}
-    secretName: {{ .Release.Name }}-tls
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: {{ .Release.Name }}-tls
   rules:
-  - host: {{ .Values.ingress.host }}
-    http:
-      paths:
-      # API routes to backend
-      - path: /api
-        pathType: Prefix
-        backend:
-          service:
-            name: {{ .Release.Name }}-backend
-            port:
-              number: {{ .Values.backend.port }}
-      # All other routes to frontend
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: {{ .Release.Name }}-frontend
-            port:
-              number: {{ .Values.frontend.port }}
-
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          # API routes to backend
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-backend
+                port:
+                  number: {{ .Values.backend.port }}
+          # All other routes to frontend
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-frontend
+                port:
+                  number: {{ .Values.frontend.port }}
