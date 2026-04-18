@@ -50,8 +50,6 @@ spec:
               key: JWT_CONFIGURATION_SIGNATURE_PRIVATE_KEY
         - name: JWT_CONFIGURATION_RESTRICTED_DURATION_IN_SECONDS
           value: {{ .Values.config.jwtDurationSeconds | quote }}
-        - name: FOODIE_BACKEND_HOST
-          value: {{ .Release.Name }}-backend
         - name: PLAY_MAILER_HOST
           value: {{ .Values.config.mailerHost }}
         - name: PLAY_MAILER_FROM
