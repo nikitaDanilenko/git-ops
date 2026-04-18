@@ -25,6 +25,8 @@ spec:
         ports:
         - containerPort: {{ .Values.backend.port }}
         env:
+        - name: JAVA_OPTS
+          value: {{ .Values.backend.javaOpts | quote }}
         - name: PLAY_HTTP_SECRET_KEY
           valueFrom:
             secretKeyRef:
