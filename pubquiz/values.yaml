@@ -1,0 +1,43 @@
+backend:
+  image:
+    repository: nikitadanilenko/pubquiz-server
+    pullPolicy: IfNotPresent
+    tag: ""
+  port: 8080
+  path: ""
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+config:
+  jwt:
+    expirationSeconds: 259200 # 3 days
+
+  organizers:
+    admin:
+      name: admin
+    user:
+      name: organizer
+
+postgres:
+  image:
+    repository: postgres
+    tag: "16-alpine"
+    pullPolicy: IfNotPresent
+  port: 5432
+  database: pubquiz
+  user: pubquiz
+  storage:
+    size: 1Gi
+
+ingress:
+  host: pubquiz.danilenko.io
+  clusterIssuer: letsencrypt-prod
+
+# Needs to match the name of the secret defined in the sealed-secrets.yaml file
+secretName: pubquiz-server-secret
