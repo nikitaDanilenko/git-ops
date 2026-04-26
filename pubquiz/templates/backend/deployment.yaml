@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-backend
+  labels:
+    {{- include "pubquiz-server.labels" . | nindent 4 }}
+    app.kubernetes.io/component: backend
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "pubquiz-server.labels" . | nindent 6 }}
+      app.kubernetes.io/component: backend
+  template:
+    metadata:
+      labels:
+        {{- include "pubquiz-server.labels" . | nindent 8 }}
+        app.kubernetes.io/component: backend
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+          env:
+            - name: PORT
+              value: {{ .Values.backend.port | quote }}
+            - name: SERVER_PATH
+              value: {{ .Values.backend.path | quote }}
+            - name: DATABASE_HOST
+              value: {{ include "pubquiz-server.databaseHost" . | quote }}
+            - name: DATABASE_PORT
+              value: {{ .Values.postgres.port | quote }}
+            - name: DATABASE_NAME
+              value: {{ .Values.postgres.database | quote }}
+            - name: DATABASE_USER
+              value: {{ .Values.postgres.user | quote }}
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: database-password
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: jwt-secret
+            - name: JWT_EXPIRATION_SECONDS
+              value: {{ .Values.config.jwt.expirationSeconds | quote }}
+            - name: ORGANIZER_ADMIN_NAME
+              value: {{ .Values.config.organizers.admin.name | quote }}
+            - name: ORGANIZER_ADMIN_HASH
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: organizer-admin-hash
+            - name: ORGANIZER_USER_NAME
+              value: {{ .Values.config.organizers.user.name | quote }}
+            - name: ORGANIZER_USER_HASH
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: organizer-user-hash
+          ports:
+            - name: http
+              containerPort: {{ .Values.backend.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /public
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /public
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          startupProbe:
+            httpGet:
+              path: /public
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          {{- with .Values.backend.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
