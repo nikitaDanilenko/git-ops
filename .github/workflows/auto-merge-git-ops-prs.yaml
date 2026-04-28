@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   call_auto_merge:
-    if: github.actor == 'gitops-bot-nikita-danilenko'
+    if: github.actor == 'gitops-bot-nikita-danilenko[bot]'
     uses: ./.github/workflows/auto-merge-pull-requests.yaml
     secrets:
       merge-token: ${{ secrets.GITHUB_TOKEN }}
