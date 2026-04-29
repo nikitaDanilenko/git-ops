@@ -5,7 +5,7 @@ metadata:
   labels:
     app: roundcube
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: roundcube
@@ -16,23 +16,20 @@ spec:
     spec:
       containers:
         - name: roundcube
-          image: roundcube/roundcubemail:1.6.15-apache
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 80
           env:
             - name: ROUNDCUBEMAIL_DEFAULT_HOST
-              value: "ssl://danilenko.io"
+              value: "ssl://{{ .Values.mail.host }}"
             - name: ROUNDCUBEMAIL_DEFAULT_PORT
-              value: "993"
+              value: {{ .Values.mail.imapPort | quote }}
             - name: ROUNDCUBEMAIL_SMTP_SERVER
-              value: "danilenko.io"
+              value: {{ .Values.mail.host | quote }}
             - name: ROUNDCUBEMAIL_SMTP_PORT
-              value: "25"
+              value: {{ .Values.mail.smtpPort | quote }}
+          {{- with .Values.resources }}
           resources:
-            requests:
-              memory: "128Mi"
-              cpu: "100m"
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
-
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
