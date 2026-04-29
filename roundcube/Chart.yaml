@@ -1,0 +1,7 @@
+apiVersion: v2
+name: roundcube
+description: Roundcube webmail for reading incoming mail
+type: application
+version: 1.0.0
+appVersion: "1.6.15-apache"
+
