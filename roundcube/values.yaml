@@ -1,0 +1,23 @@
+replicaCount: 1
+
+image:
+  repository: roundcube/roundcubemail
+  tag: ""  # Defaults to Chart.appVersion
+  pullPolicy: IfNotPresent
+
+mail:
+  host: danilenko.io
+  imapPort: 993
+  smtpPort: 25
+
+ingress:
+  host: mail.danilenko.io
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "256Mi"
+    cpu: "500m"
+
