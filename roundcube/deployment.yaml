@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: roundcube
+  labels:
+    app: roundcube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: roundcube
+  template:
+    metadata:
+      labels:
+        app: roundcube
+    spec:
+      containers:
+        - name: roundcube
+          image: roundcube/roundcubemail:1.6.15-apache
+          ports:
+            - containerPort: 80
+          env:
+            - name: ROUNDCUBEMAIL_DEFAULT_HOST
+              value: "ssl://danilenko.io"
+            - name: ROUNDCUBEMAIL_DEFAULT_PORT
+              value: "993"
+            - name: ROUNDCUBEMAIL_SMTP_SERVER
+              value: "danilenko.io"
+            - name: ROUNDCUBEMAIL_SMTP_PORT
+              value: "25"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+
