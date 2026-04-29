@@ -26,7 +26,7 @@ spec:
             - name: ROUNDCUBEMAIL_DEFAULT_PORT
               value: {{ .Values.mail.imapPort | quote }}
             - name: ROUNDCUBEMAIL_SMTP_SERVER
-              value: {{ .Values.mail.host | quote }}
+              value: "tls://{{ .Values.mail.host }}"
             - name: ROUNDCUBEMAIL_SMTP_PORT
               value: {{ .Values.mail.smtpPort | quote }}
           {{- with .Values.resources }}
