@@ -8,7 +8,7 @@ image:
 mail:
   host: danilenko.io
   imapPort: 993
-  smtpPort: 25
+  smtpPort: 587
 
 ingress:
   host: mail.danilenko.io
