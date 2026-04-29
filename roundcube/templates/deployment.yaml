@@ -29,6 +29,10 @@ spec:
               value: "tls://{{ .Values.mail.host }}"
             - name: ROUNDCUBEMAIL_SMTP_PORT
               value: {{ .Values.mail.smtpPort | quote }}
+            - name: ROUNDCUBEMAIL_SMTP_USER
+              value: "%u"
+            - name: ROUNDCUBEMAIL_SMTP_PASS
+              value: "%p"
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
