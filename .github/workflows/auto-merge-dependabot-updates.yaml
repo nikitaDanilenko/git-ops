@@ -22,6 +22,6 @@ jobs:
     needs:
       - fetch_metadata
     if: needs.fetch_metadata.outputs.update-type != 'version-update:semver-major'
-    uses: ./.github/workflows/auto-merge-pull-requests.yml
+    uses: ./.github/workflows/auto-merge-pull-requests.yaml
     secrets:
       merge-token: ${{ secrets.GITHUB_TOKEN }}
