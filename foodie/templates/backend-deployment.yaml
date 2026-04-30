@@ -71,6 +71,8 @@ spec:
           value: {{ .Values.config.mailerPort | quote }}
         - name: PLAY_MAILER_TLS
           value: {{ .Values.config.mailerTls | quote }}
+        - name: USER_CONFIGURATION_FRONTEND
+          value: {{ .Values.config.frontendUrl }}
         resources:
           {{- toYaml .Values.backend.resources | nindent 10 }}
         readinessProbe:
