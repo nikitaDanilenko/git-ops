@@ -1,7 +1,7 @@
 backend:
   image:
     repository: nikitadanilenko/foodie
-    tag: 0.0.244
+    tag: 0.0.259
     pullPolicy: Always
   port: 9000
   replicaCount: 1
@@ -16,7 +16,7 @@ backend:
 frontend:
   image:
     repository: nikitadanilenko/foodie-frontend
-    tag: 0.0.244
+    tag: 0.0.259
     pullPolicy: Always
   port: 80
   replicaCount: 1
@@ -46,3 +46,4 @@ config:
   mailerFrom: foodie@mail.danilenko.io
   mailerPort: "587"
   mailerTls: "true"
+  frontendUrl: foodie.danilenko.io
