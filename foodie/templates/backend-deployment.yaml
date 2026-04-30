@@ -51,11 +51,26 @@ spec:
         - name: JWT_CONFIGURATION_RESTRICTED_DURATION_IN_SECONDS
           value: {{ .Values.config.jwtDurationSeconds | quote }}
         - name: PLAY_MAILER_HOST
-          value: {{ .Values.config.mailerHost }}
+          valueFrom:
+            secretKeyRef:
+              name: foodie-secrets
+              key: PLAY_MAILER_HOST
+        - name: PLAY_MAILER_USER
+          valueFrom:
+            secretKeyRef:
+              name: foodie-secrets
+              key: PLAY_MAILER_USER
+        - name: PLAY_MAILER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: foodie-secrets
+              key: PLAY_MAILER_PASSWORD
         - name: PLAY_MAILER_FROM
           value: {{ .Values.config.mailerFrom }}
         - name: PLAY_MAILER_PORT
           value: {{ .Values.config.mailerPort | quote }}
+        - name: PLAY_MAILER_TLS
+          value: {{ .Values.config.mailerTls | quote }}
         resources:
           {{- toYaml .Values.backend.resources | nindent 10 }}
         readinessProbe:
