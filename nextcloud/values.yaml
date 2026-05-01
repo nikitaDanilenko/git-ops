@@ -20,7 +20,7 @@ postgres:
 storage:
   data:
     size: 10Gi
-    storageClass: ""  # Uses default storage class
+    storageClass: "local-path-retain"  # Retains data when PVC deleted
   postgres:
     size: 2Gi
     storageClass: ""
