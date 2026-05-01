@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-nextcloud
+  name: {{ .Release.Name }}-app
   labels:
     {{- include "nextcloud.labels" . | nindent 4 }}
     app.kubernetes.io/component: nextcloud
@@ -82,5 +82,5 @@ spec:
       volumes:
         - name: nextcloud-data
           persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-nextcloud-data
+            claimName: {{ .Release.Name }}-data
 
