@@ -20,7 +20,9 @@ postgres:
 storage:
   data:
     size: 10Gi
-    storageClass: "local-path-retain"  # Retains data when PVC deleted
+    # Use "local-path-retain" for new PVCs to preserve data on deletion
+    # Existing PVC uses "local-path" - change requires PVC recreation
+    storageClass: ""
   postgres:
     size: 2Gi
     storageClass: ""
