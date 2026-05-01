@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: roundcube
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/nikitaDanilenko/git-ops
+    targetRevision: main
+    path: roundcube
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: roundcube
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
