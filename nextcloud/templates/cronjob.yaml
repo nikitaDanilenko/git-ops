@@ -32,5 +32,5 @@ spec:
           volumes:
             - name: nextcloud-data
               persistentVolumeClaim:
-                claimName: {{ .Release.Name }}-nextcloud-data
+                claimName: {{ .Release.Name }}-data
 
