@@ -1,0 +1,45 @@
+replicaCount: 1
+
+image:
+  repository: nextcloud
+  tag: ""  # Defaults to Chart.appVersion
+  pullPolicy: IfNotPresent
+
+ingress:
+  host: files.danilenko.io
+
+nextcloud:
+  adminUser: admin
+
+postgres:
+  # host is set dynamically via template as {{ .Release.Name }}-postgres
+  port: 5432
+  database: nextcloud
+  user: nextcloud
+
+storage:
+  data:
+    size: 10Gi
+    storageClass: ""  # Uses default storage class
+  postgres:
+    size: 2Gi
+    storageClass: ""
+
+resources:
+  nextcloud:
+    requests:
+      memory: "256Mi"
+      cpu: "200m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+  postgres:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+secretName: nextcloud-secrets
+

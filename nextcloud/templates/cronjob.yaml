@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-cron
+  labels:
+    {{- include "nextcloud.labels" . | nindent 4 }}
+    app.kubernetes.io/component: cron
+spec:
+  schedule: "0 3 * * *"  # Daily at 3 AM
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            {{- include "nextcloud.selectorLabels" . | nindent 12 }}
+            app.kubernetes.io/component: cron
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: cron
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              command:
+                - /bin/sh
+                - -c
+                - php -f /var/www/html/cron.php
+              volumeMounts:
+                - name: nextcloud-data
+                  mountPath: /var/www/html
+          volumes:
+            - name: nextcloud-data
+              persistentVolumeClaim:
+                claimName: {{ .Release.Name }}-nextcloud-data
+
