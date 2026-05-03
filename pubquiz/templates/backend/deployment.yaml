@@ -29,8 +29,6 @@ spec:
           env:
             - name: PORT
               value: {{ .Values.backend.port | quote }}
-            - name: SERVER_PATH
-              value: {{ .Values.backend.path | quote }}
             - name: DATABASE_HOST
               value: {{ include "pubquiz-server.databaseHost" . | quote }}
             - name: DATABASE_PORT
