@@ -2,7 +2,7 @@ backend:
   image:
     repository: nikitadanilenko/pubquiz-server
     pullPolicy: IfNotPresent
-    tag: "0.1.12"
+    tag: "0.1.13"
   port: 8080
   path: ""
   replicaCount: 1
