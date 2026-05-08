@@ -3,4 +3,4 @@ name: calibre-web
 description: Calibre-Web ebook library with format conversion
 type: application
 version: 1.0.0
-appVersion: "0.6.24"
+appVersion: "0.6.26"
