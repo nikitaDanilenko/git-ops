@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-app
+  labels:
+    {{- include "calibre-web.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "calibre-web.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "calibre-web.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: calibre-web
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8083
+              protocol: TCP
+          env:
+            - name: PUID
+              value: {{ .Values.env.puid | quote }}
+            - name: PGID
+              value: {{ .Values.env.pgid | quote }}
+            - name: TZ
+              value: {{ .Values.env.tz | quote }}
+            - name: DOCKER_MODS
+              value: {{ .Values.env.dockerMods | quote }}
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: books
+              mountPath: /books
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-config
+        - name: books
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-books

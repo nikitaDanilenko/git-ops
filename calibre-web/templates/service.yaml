@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-app
+  labels:
+    {{- include "calibre-web.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8083
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "calibre-web.selectorLabels" . | nindent 4 }}

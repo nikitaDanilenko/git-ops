@@ -1,0 +1,31 @@
+replicaCount: 1
+
+image:
+  repository: lscr.io/linuxserver/calibre-web
+  tag: ""  # Defaults to Chart.appVersion
+  pullPolicy: IfNotPresent
+
+ingress:
+  host: ebooks.danilenko.io
+
+env:
+  puid: 1000
+  pgid: 1000
+  tz: Europe/Berlin
+  dockerMods: linuxserver/mods:universal-calibre
+
+storage:
+  books:
+    size: 5Gi
+    storageClass: local-path-retain
+  config:
+    size: 500Mi
+    storageClass: local-path-retain
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "100m"
+  limits:
+    memory: "1Gi"
+    cpu: "1000m"
