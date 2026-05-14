@@ -36,6 +36,7 @@ frontend:
     repository: nikitadanilenko/pubquiz-front-end
     pullPolicy: IfNotPresent
     tag: "3.0.3"
+  backEndPrefix: "/api"
   port: 80
   replicaCount: 1
   resources:
