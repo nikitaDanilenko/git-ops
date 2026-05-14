@@ -21,6 +21,9 @@ spec:
         - name: {{ .Chart.Name }}-frontend
           image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
           imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          env:
+            - name: BACK_END_PREFIX
+              value: {{ .Values.frontend.backEndPrefix | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.frontend.port }}
