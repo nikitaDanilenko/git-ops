@@ -11,3 +11,17 @@ spec:
     regex: "^https?://[^/]+/quizzes/([^/]+)/team/([^/]+)/code/[^/]+"
     replacement: "https://{{ .Values.ingress.host }}/quizzes/${1}/teams/${2}"
     permanent: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ .Release.Name }}-legacy-redirect-sheets
+  labels:
+    {{- include "pubquiz-frontend.labels" . | nindent 4 }}
+spec:
+  # Redirects old PDF sheet links to the current sheets page.
+  # Filename pattern: <YYYY-MM-DD>-<quizId>-QuizSheet.pdf
+  redirectRegex:
+    regex: "^https?://[^/]+/quizzes/sheets/\\d{4}-\\d{2}-\\d{2}-(\\d+)-QuizSheet\\.pdf"
+    replacement: "https://{{ .Values.ingress.host }}/quizzes/${1}/sheets"
+    permanent: true
