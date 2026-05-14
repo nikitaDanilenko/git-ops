@@ -31,8 +31,23 @@ postgres:
   user: pubquiz
   storage:
     size: 1Gi
+frontend:
+  image:
+    repository: nikitadanilenko/pubquiz-front-end
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  port: 80
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "50m"
+    limits:
+      memory: "128Mi"
+      cpu: "200m"
 ingress:
   host: pubquiz.danilenko.io
+  legacyHost: danilenko.io
   clusterIssuer: letsencrypt-prod
 # Needs to match the name of the secret defined in the sealed-secrets.yaml file
 secretName: pubquiz-server-secret
