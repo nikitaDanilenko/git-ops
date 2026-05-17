@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: londo
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/nikitaDanilenko/git-ops
+    targetRevision: main
+    path: londo
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: londo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=orphan
