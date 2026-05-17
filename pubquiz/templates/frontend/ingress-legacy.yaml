@@ -25,3 +25,31 @@ spec:
                 name: {{ .Release.Name }}-frontend
                 port:
                   name: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-frontend-legacy-www
+  labels:
+    {{- include "pubquiz-frontend.labels" . | nindent 4 }}
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer | quote }}
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Release.Name }}-legacy-redirect-sheets@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - "www.{{ .Values.ingress.legacyHost }}"
+      secretName: {{ .Release.Name }}-legacy-www-tls
+  rules:
+    - host: "www.{{ .Values.ingress.legacyHost }}"
+      http:
+        paths:
+          - path: /quizzes/sheets
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-frontend
+                port:
+                  name: http
