@@ -114,3 +114,4 @@ When wrapping upstream charts via `Chart.yaml` `dependencies:`, ArgoCD runs `hel
 - **Do not** delete a namespace to "clean up" -- `selfHeal` plus `local-path-retain` may leave orphaned PVs.
 - Traefik ingress `ADDRESS` empty = wrong `ingressClassName` (likely set to `nginx`).
 - Grafana/Prometheus/Loki upstream charts default to nginx-style ingress -- override.
+- Helm-rendered `StatefulSet.spec.volumeClaimTemplates` always shows OutOfSync in ArgoCD because k8s strips `apiVersion`/`kind` from the stored template. Fix via `ignoreDifferences` on the Application (see `argocd/applications/loki.yaml`).

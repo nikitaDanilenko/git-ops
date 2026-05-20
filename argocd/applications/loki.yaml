@@ -20,3 +20,8 @@ spec:
       - CreateNamespace=true
       - PrunePropagationPolicy=orphan
       - ServerSideApply=true
+  ignoreDifferences:
+    - group: apps
+      kind: StatefulSet
+      jsonPointers:
+        - /spec/volumeClaimTemplates
