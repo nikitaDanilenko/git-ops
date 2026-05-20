@@ -55,7 +55,6 @@ annotations:
   cert-manager.io/cluster-issuer: letsencrypt-prod
   traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
   traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
-  traefik.ingress.kubernetes.io/router.tls: "true"
 ```
 
 ### Sealed Secrets
