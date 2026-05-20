@@ -48,7 +48,15 @@ annotations:
   traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
 ```
 
-When wrapping an upstream Helm chart that exposes ingress directly (e.g. `loki-stack/grafana`), set `ingressClassName: traefik` in the subchart values — NOT `nginx` (chart defaults often assume nginx).
+When wrapping an upstream Helm chart that exposes ingress directly (e.g. `loki-stack/grafana`), set `ingressClassName: traefik` in the subchart values — NOT `nginx` (chart defaults often assume nginx). Also pass the full annotation set, otherwise the ingress binds only to the `web` entrypoint (HTTP, port 80) and HTTPS will not work:
+
+```yaml
+annotations:
+  cert-manager.io/cluster-issuer: letsencrypt-prod
+  traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+  traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
+  traefik.ingress.kubernetes.io/router.tls: "true"
+```
 
 ### Sealed Secrets
 
