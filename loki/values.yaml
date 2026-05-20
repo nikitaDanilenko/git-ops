@@ -1,0 +1,64 @@
+secretName: loki-secrets
+
+loki-stack:
+  loki:
+    enabled: true
+    persistence:
+      enabled: true
+      storageClassName: local-path-retain
+      size: 5Gi
+    config:
+      compactor:
+        working_directory: /data/loki/compactor
+        shared_store: filesystem
+        retention_enabled: true
+        retention_delete_delay: 2h
+        retention_delete_worker_count: 150
+      limits_config:
+        retention_period: 720h
+        reject_old_samples: true
+        reject_old_samples_max_age: 168h
+
+  promtail:
+    enabled: true
+    config:
+      snippets:
+        pipelineStages:
+          - cri: {}
+          - multiline:
+              firstline: '^\d{4}-\d{2}-\d{2}|^\[\d{4}-\d{2}-\d{2}'
+              max_lines: 500
+              max_wait_time: 3s
+          - json:
+              expressions:
+                level: level
+          - labels:
+              level:
+
+  grafana:
+    enabled: true
+    admin:
+      existingSecret: loki-secrets
+      userKey: admin-user
+      passwordKey: admin-password
+    persistence:
+      enabled: true
+      storageClassName: local-path-retain
+      size: 1Gi
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+      hosts:
+        - logs.danilenko.io
+      tls:
+        - secretName: grafana-tls
+          hosts:
+            - logs.danilenko.io
+    sidecar:
+      datasources:
+        enabled: true
+
+  prometheus:
+    enabled: false
