@@ -63,25 +63,27 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.secretName }}
                   key: organizer-user-hash
+            - name: LOG_SQL
+              value: {{ .Values.backend.logSql | default false | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.backend.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /public
+              path: /health
               port: http
             initialDelaySeconds: 5
-            periodSeconds: 10
+            periodSeconds: 60
           readinessProbe:
             httpGet:
-              path: /public
+              path: /health
               port: http
             initialDelaySeconds: 5
-            periodSeconds: 10
+            periodSeconds: 60
           startupProbe:
             httpGet:
-              path: /public
+              path: /health
               port: http
             failureThreshold: 30
             periodSeconds: 10
