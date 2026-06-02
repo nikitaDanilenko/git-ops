@@ -1,7 +1,7 @@
 backend:
   image:
     repository: nikitadanilenko/londo
-    tag: 0.1.45
+    tag: 0.1.46
     pullPolicy: Always
   port: 9000
   replicaCount: 1
