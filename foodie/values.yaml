@@ -30,7 +30,7 @@ frontend:
 postgres:
   image:
     repository: postgres
-    tag: "18-alpine"
+    tag: "16-alpine"
     pullPolicy: IfNotPresent
   port: 5432
   database: foodie
