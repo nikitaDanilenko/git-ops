@@ -51,7 +51,7 @@ data:
 
   subscriptions: |
     - recipients:
-        - email:nikita.danilenko.is@gmail.com
+        - resend:nikita.danilenko.is@gmail.com
       triggers:
         - on-health-degraded
         - on-sync-failed
