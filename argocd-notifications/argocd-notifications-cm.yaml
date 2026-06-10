@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-notifications-cm
+  namespace: argocd
+data:
+  context: |
+    argocdUrl: https://argocd.danilenko.io
+
+  service.email.resend: |
+    host: smtp.resend.com
+    port: 587
+    from: alerts@mail.danilenko.io
+    username: $email-username
+    password: $email-password
+
+  template.app-health-degraded: |
+    email:
+      subject: "[Argo] {{.app.metadata.name}} is Degraded"
+    message: |
+      Application {{.app.metadata.name}} entered Degraded state.
+
+      Sync:   {{.app.status.sync.status}}
+      Health: {{.app.status.health.status}}
+      Reason: {{.app.status.health.message}}
+
+      {{if .context.argocdUrl}}URL: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}{{end}}
+
+  template.app-sync-failed: |
+    email:
+      subject: "[Argo] Sync failed for {{.app.metadata.name}}"
+    message: |
+      Sync failed for application {{.app.metadata.name}}.
+
+      Phase:   {{.app.status.operationState.phase}}
+      Message: {{.app.status.operationState.message}}
+
+      {{if .context.argocdUrl}}URL: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}{{end}}
+
+  trigger.on-health-degraded: |
+    - description: Application has degraded
+      send:
+        - app-health-degraded
+      when: app.status.health.status == 'Degraded'
+
+  trigger.on-sync-failed: |
+    - description: Application syncing has failed
+      send:
+        - app-sync-failed
+      when: app.status.operationState != nil and app.status.operationState.phase in ['Error', 'Failed']
+
+  subscriptions: |
+    - recipients:
+        - email:nikita.danilenko.is@gmail.com
+      triggers:
+        - on-health-degraded
+        - on-sync-failed
