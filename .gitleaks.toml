@@ -1,0 +1,11 @@
+title = "git-ops gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Bitnami SealedSecret ciphertext (Ag... prefix is structural and unforgeable without the cluster private key)"
+regexTarget = "match"
+regexes = [
+    '''Ag[A-Za-z0-9+/=]{100,}''',
+]
