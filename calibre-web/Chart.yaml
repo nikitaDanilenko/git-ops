@@ -3,4 +3,5 @@ name: calibre-web
 description: Calibre-Web ebook library with format conversion
 type: application
 version: 1.0.0
+# renovate: datasource=docker depName=lscr.io/linuxserver/calibre-web
 appVersion: "0.6.26"

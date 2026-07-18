@@ -3,5 +3,6 @@ name: nextcloud
 description: Nextcloud file hosting and collaboration platform
 type: application
 version: 1.0.0
+# renovate: datasource=docker depName=nextcloud
 appVersion: "33.0.3"
 
