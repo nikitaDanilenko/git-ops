@@ -1,7 +1,7 @@
 backend:
   image:
     repository: nikitadanilenko/foodie
-    tag: 1.0.11
+    tag: 1.0.12
     pullPolicy: Always
   port: 9000
   replicaCount: 1
